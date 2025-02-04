@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Tracker</title>
+  <!-- Bootstrap CSS (using an alternative CDN link) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <style>
+    body {
+      padding-top: 20px;
+    }
+    .rating-group .btn {
+      min-width: 45px;
+    }
+    .section-header {
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+    .time-block {
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    .btn-group-toggle .btn input[type="radio"] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">Daily Tracker</h1>
+    <form id="trackerForm">
+      <div class="form-group">
+        <label for="entryDate">Date</label>
+        <input type="date" class="form-control" id="entryDate" name="Entry Date" required>
+      </div>
+      
+      
+      <!-- Sleep Section with Button Groups -->
+      <div class="section-header"><h4>Sleep</h4></div>
+      <div class="form-group">
+        <label>Sleep Hours</label>
+        <div id="sleepHoursGroup" class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Hours" value="5" autocomplete="off"> 5
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Hours" value="6" autocomplete="off"> 6
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Hours" value="7" autocomplete="off"> 7
+          </label>
+          <label class="btn btn-outline-primary active">
+            <input type="radio" name="Sleep Hours" value="8" autocomplete="off" checked> 8
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Hours" value="9" autocomplete="off"> 9
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Hours" value="10+" autocomplete="off"> 10+
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Sleep Quality</label>
+        <div id="sleepQualityGroup" class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Quality" value="0" autocomplete="off"> 0
+          </label>
+          <label class="btn btn-outline-primary active">
+            <input type="radio" name="Sleep Quality" value="1" autocomplete="off" checked> 1
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="Sleep Quality" value="2" autocomplete="off"> 2
+          </label>
+        </div>
+      </div>
+      
+      <!-- Global / Daily Fields for Medications and Others -->
+      <div class="section-header"><h4>Daily Details</h4></div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="morningMed">Morning Medication</label>
+          <input type="text" class="form-control" id="morningMed" name="Morning Medication" 
+                 placeholder="e.g., Adderall XR" value="Adderall XR">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="morningMedMg">Morning Medication (mg)</label>
+          <input type="number" class="form-control" id="morningMedMg" name="Morning Medication (mg)" 
+                 placeholder="mg" value="15">
+        </div>
+        <div class="form-group col-md-3">
+          <label>Took Morning Med?</label>
+          <div id="morningMedTaken" class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+            <label class="btn btn-outline-secondary active">
+              <input type="radio" name="Morning Med Taken" value="yes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-outline-secondary">
+              <input type="radio" name="Morning Med Taken" value="no" autocomplete="off"> No
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="afternoonMed">Afternoon Medication</label>
+          <input type="text" class="form-control" id="afternoonMed" name="Afternoon Medication" 
+                 placeholder="e.g., Adderall Quick Release" value="Adderall Quick Release">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="afternoonMedMg">Afternoon Medication (mg)</label>
+          <input type="number" class="form-control" id="afternoonMedMg" name="Afternoon Medication (mg)" 
+                 placeholder="mg" value="15">
+        </div>
+        <div class="form-group col-md-3">
+          <label>Took Afternoon Med?</label>
+          <div id="afternoonMedTaken" class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+            <label class="btn btn-outline-secondary active">
+              <input type="radio" name="Afternoon Med Taken" value="yes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-outline-secondary">
+              <input type="radio" name="Afternoon Med Taken" value="no" autocomplete="off"> No
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="section-header"><h4>Multivitamin</h4></div>
+<div class="form-group">
+  <label>Took Multivitamin?</label>
+  <div id="multivitaminToggle" class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+    <label class="btn btn-outline-secondary active">
+      <input type="radio" name="Multivitamin Taken" value="yes" autocomplete="off" checked> Yes
+    </label>
+    <label class="btn btn-outline-secondary">
+      <input type="radio" name="Multivitamin Taken" value="no" autocomplete="off"> No
+    </label>
+  </div>
+</div>
+
+      <div class="section-header"><h4>Breakfast</h4></div>
+<div class="form-group">
+  <div class="row">
+    <!-- Quality Column -->
+    <div class="col">
+      <label>Quality</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Quality" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Quality" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Quality" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+    <!-- Protein Column -->
+    <div class="col">
+      <label>Protein</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Protein" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Protein" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Breakfast Protein" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-header"><h4>Lunch</h4></div>
+<div class="form-group">
+  <div class="row">
+    <!-- Quality Column -->
+    <div class="col">
+      <label>Quality</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Quality" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Quality" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Quality" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+    <!-- Protein Column -->
+    <div class="col">
+      <label>Protein</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Protein" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Protein" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Lunch Protein" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-header"><h4>Afternoon Snack</h4></div>
+<div class="form-group">
+  <div class="row">
+    <!-- Quality Column -->
+    <div class="col">
+      <label>Quality</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Quality" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Quality" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Quality" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+    <!-- Protein Column -->
+    <div class="col">
+      <label>Protein</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Protein" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Protein" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Afternoon Snack Protein" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-header"><h4>Dinner</h4></div>
+<div class="form-group">
+  <div class="row">
+    <!-- Quality Column -->
+    <div class="col">
+      <label>Quality</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Quality" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Quality" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Quality" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+    <!-- Protein Column -->
+    <div class="col">
+      <label>Protein</label>
+      <div class="btn-group btn-group-toggle rating-group" data-toggle="buttons">
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Protein" value="0" autocomplete="off"> 0
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Protein" value="1" autocomplete="off"> 1
+        </label>
+        <label class="btn btn-outline-primary">
+          <input type="radio" name="Dinner Protein" value="2" autocomplete="off"> 2
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      
+      <!-- Time Block Sections -->
+      <div class="section-header"><h4>Rage</h4></div>
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tbody>
+            <!-- Early Morning Row -->
+            <tr>
+              <td style="width: 40%; vertical-align: middle;">Early Morning (6–9 AM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Morning Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Morning (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Afternoon (12–3 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Afternoon (3–6 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Evening (6–9 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_EarlyEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Evening (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Rage_LateEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+      <div class="section-header"><h4>Focus</h4></div>
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tbody>
+            <!-- Early Morning Row -->
+            <tr>
+              <td style="width: 40%; vertical-align: middle;">Early Morning (6–9 AM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Morning Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Morning (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Afternoon (12–3 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Afternoon (3–6 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Evening (6–9 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_EarlyEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Evening (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Focus_LateEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+      <div class="section-header"><h4>Argumentative</h4></div>
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tbody>
+            <!-- Early Morning Row -->
+            <tr>
+              <td style="width: 40%; vertical-align: middle;">Early Morning (6–9 AM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Morning Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Morning (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Afternoon (12–3 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Afternoon (3–6 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Evening (6–9 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_EarlyEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Evening (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="Argumentative_LateEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+      <div class="section-header"><h4>Parental Rage</h4></div>
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tbody>
+            <!-- Early Morning Row -->
+            <tr>
+              <td style="width: 40%; vertical-align: middle;">Early Morning (6–9 AM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Morning Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Morning (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateMorning" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Afternoon (12–3 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Afternoon Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Afternoon (3–6 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateAfternoon" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Early Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Early Evening (6–9 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_EarlyEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <!-- Late Evening Row -->
+            <tr>
+              <td style="vertical-align: middle;">Late Evening (9–12 PM)</td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="0" autocomplete="off"> 0
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="1" autocomplete="off"> 1
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="2" autocomplete="off"> 2
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="3" autocomplete="off"> 3
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="4" autocomplete="off"> 4
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="5" autocomplete="off"> 5
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="ParentalRage_LateEvening" value="na" autocomplete="off"> N/A
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+
+
+      
+      <!-- Additional Daily Notes -->
+      <div class="form-group">
+        <label for="dailyNotes">Additional Daily Notes</label>
+        <textarea class="form-control" id="dailyNotes" name="Additional Daily Notes" rows="3"></textarea>
+      </div>
+      
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit Daily Data</button>
+      </div>
+    </form>
+    
+    <!-- Response Message -->
+    <div id="responseMessage" class="mt-3"></div>
+  </div>
+
+  <!-- jQuery and Bootstrap JS (needed for button toggles) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" 
+          crossorigin="anonymous"></script>
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              var today = new Date().toISOString().split('T')[0]; // gets "YYYY-MM-DD"
+              document.getElementById('entryDate').value = today;
+            });
+          </script>
+          
+  
+  <!-- Custom JavaScript to handle form submission and med toggles -->
+  <script>
+    // Handle med-taken toggles:
+    function setupMedToggle(medTakenSelector, medMgSelector, defaultValue) {
+      // Listen for changes in the radio buttons for medication taken.
+      document.querySelectorAll('input[name="' + medTakenSelector + '"]').forEach(function(el) {
+        el.addEventListener('change', function() {
+          var mgInput = document.getElementById(medMgSelector);
+          if (this.value === 'no') {
+            mgInput.value = 0;
+            mgInput.disabled = true;
+          } else {
+            mgInput.disabled = false;
+            // If the field is empty or zero, reset to default
+            if (!mgInput.value || mgInput.value == 0) {
+              mgInput.value = defaultValue;
+            }
+          }
+        });
+      });
+    }
+    
+    // Set up toggles for morning and afternoon medications
+    setupMedToggle("Morning Med Taken", "morningMedMg", 15);
+    setupMedToggle("Afternoon Med Taken", "afternoonMedMg", 15);
+    
+    // Handle form submission
+    document.getElementById('trackerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Create an object to hold our data.
+      let formData = {};
+      // Use FormData API to grab form fields.
+      let data = new FormData(this);
+      data.forEach((value, key) => {
+        formData[key] = value;
+      });
+      
+      // Add the current date/time as Entry Date.
+      formData['Entry Date'] = new Date().toISOString();
+      
+      // Log the data for debugging.
+      console.log('Form Data:', formData);
+      
+      // POST the JSON data to the Google Apps Script web app.
+      fetch('https://script.google.com/macros/s/AKfycbzHly9LCImhNolHroFZlcp9wNDUuHaowNXJ5Pxyk1dcAXyY49sZsFkdN-vodUNIFQ0s/exec', {
+        method: 'POST',
+        mode: 'no-cors',  // Using no-cors if response inspection is not needed
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        document.getElementById('responseMessage').innerHTML = '<div class="alert alert-success">Data submitted successfully!</div>';
+        document.getElementById('trackerForm').reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('responseMessage').innerHTML = '<div class="alert alert-danger">Error submitting data.</div>';
+      });
+    });
+  </script>
+</body>
+</html>
